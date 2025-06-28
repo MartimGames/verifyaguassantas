@@ -1,75 +1,45 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-PT">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Confirmar Conta - Águas Santas</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f5f5f5;
-      color: #333;
-      text-align: center;
-    }
-    .container {
-      max-width: 400px;
-      margin: 50px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
-    }
-    h1 {
-      color: #007BFF;
-      margin-bottom: 20px;
-    }
-    p.status {
-      font-size: 1.1em;
-      margin-top: 20px;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Confirmação de Conta</title>
 </head>
 <body>
-  <div class="container">
-    <h1>Confirmação de Conta</h1>
-    <p id="message">A confirmar a tua conta...</p>
-  </div>
+  <h1 id="title">A confirmar...</h1>
+  <p id="message">Por favor aguarde...</p>
 
   <script>
-    // Função para ler query params da URL
-    function getQueryParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
-    }
+    // Obter parâmetros da URL
+    const params = new URLSearchParams(window.location.search);
+    const user = params.get("user");
+    const token = params.get("token");
 
-    const user = getQueryParam('user');
-    const token = getQueryParam('token');
-    const messageEl = document.getElementById('message');
+    // Exemplo de validação: mostrar info ou enviar pedido a API
+    if (user && token) {
+      // Aqui poderias fazer uma chamada à tua API se quiseres validar no servidor
+      document.getElementById("title").innerText = "Conta de " + user + " confirmada!";
+      document.getElementById("message").innerText = "O teu token: " + token;
 
-    if (!user || !token) {
-      messageEl.textContent = 'Parâmetros inválidos ou em falta.';
+      // Exemplo: chamada fetch para teu backend (caso uses)
+      
+      fetch(`https://be292135-970b-49ce-9aa1-3f79c1640a1d-00-wvcnb51cuu7t.riker.replit.dev/`)
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("message").innerText = data.message;
+        })
+        .catch(err => {
+          document.getElementById("message").innerText = "Erro ao confirmar: " + err;
+        });
+      
     } else {
-      // Aqui podes fazer a chamada ao backend para confirmar o token
-      // Exemplo fictício, substitui pela tua API real:
-     fetch('https://be292135-970b-49ce-9aa1-3f79c1640a1d-00-wvcnb51cuu7t.riker.replit.dev/', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    email: emailDoUsuario,
-    token: tokenRecebidoNoEmail
-  })
-})
-.then(res => res.json())
-.then(data => {
-  if(data.success) {
-    alert('Conta confirmada!');
-  } else {
-    alert('Erro na confirmação: ' + data.message);
-  }
-});
-
+      document.getElementById("title").innerText = "Erro";
+      document.getElementById("message").innerText = "Parâmetros inválidos.";
     }
+  </script>
+</body>
+</html>
+
   </script>
 </body>
 </html>
