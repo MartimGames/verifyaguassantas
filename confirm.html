@@ -52,21 +52,23 @@
     } else {
       // Aqui podes fazer a chamada ao backend para confirmar o token
       // Exemplo fictício, substitui pela tua API real:
-      fetch(`https://api.teusite.com/confirm?user=${encodeURIComponent(user)}&token=${encodeURIComponent(token)}`)
-        .then(response => {
-          if (!response.ok) throw new Error('Falha na confirmação');
-          return response.json();
-        })
-        .then(data => {
-          if (data.success) {
-            messageEl.textContent = `Conta do utilizador ${user} confirmada com sucesso! 🎉`;
-          } else {
-            messageEl.textContent = `Falha na confirmação: ${data.message || 'Token inválido ou expirado.'}`;
-          }
-        })
-        .catch(() => {
-          messageEl.textContent = 'Erro na comunicação com o servidor. Tenta novamente mais tarde.';
-        });
+     fetch('https://be292135-970b-49ce-9aa1-3f79c1640a1d-00-wvcnb51cuu7t.riker.replit.dev/', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    email: emailDoUsuario,
+    token: tokenRecebidoNoEmail
+  })
+})
+.then(res => res.json())
+.then(data => {
+  if(data.success) {
+    alert('Conta confirmada!');
+  } else {
+    alert('Erro na confirmação: ' + data.message);
+  }
+});
+
     }
   </script>
 </body>
